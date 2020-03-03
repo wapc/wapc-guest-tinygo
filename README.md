@@ -1,6 +1,6 @@
 # waPC Guest Library for TinyGo
 
-*Note:* Consider this SDK experimental.  We have yet to put it through more advanced use cases than "hello world".
+**Note:** Consider this SDK experimental.  We have yet to put it through more advanced use cases than "hello world".
 
 This is the TinyGo implementation of the **waPC** standard for WebAssembly guest modules. It allows any waPC-compliant WebAssembly host to invoke to procedures inside a TinyGo compiled guest and similarly for the guest to invoke procedures exposed by the host.
 
