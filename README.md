@@ -35,3 +35,4 @@ tinygo build -o example/hello.wasm -target wasm -no-debug example/hello.go
 * Only go up to 1.13 is supported by TinyGo
 * The `fmt` package requires `syscall/js.*` which are not imported by the waPC host
 * TinyGo has limited `reflect` package support, thus libraries like protobuf will likely not work
+* [No garbage collector](https://tinygo.org/compiler-internals/heap-allocation/) - memory allocation occurs in this library

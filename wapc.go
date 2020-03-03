@@ -67,8 +67,8 @@ func Register(functions Functions) {
 
 //go:export __guest_call
 func guestCall(operationSize uint32, payloadSize uint32) bool {
-	operation := make([]byte, operationSize)
-	payload := make([]byte, payloadSize)
+	operation := make([]byte, operationSize) // alloc
+	payload := make([]byte, payloadSize)     // alloc
 	guestRequest(bytesToPointer(operation), bytesToPointer(payload))
 
 	if f, ok := allFunctions[string(operation)]; ok {
@@ -102,14 +102,14 @@ func HostCall(namespace, operation string, payload []byte) ([]byte, error) {
 	)
 	if !result {
 		errorLen := hostErrorLen()
-		message := make([]byte, errorLen)
+		message := make([]byte, errorLen) // alloc
 		hostError(bytesToPointer(message))
 
-		return nil, &HostError{message: string(message)}
+		return nil, &HostError{message: string(message)} // alloc
 	}
 
 	responseLen := hostResponseLen()
-	response := make([]byte, responseLen)
+	response := make([]byte, responseLen) // alloc
 	hostResponse(bytesToPointer(response))
 
 	return response, nil
@@ -126,5 +126,5 @@ func stringToPointer(s string) uintptr {
 }
 
 func (e *HostError) Error() string {
-	return "Host error: " + e.message
+	return "Host error: " + e.message // alloc
 }
