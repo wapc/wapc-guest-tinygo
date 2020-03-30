@@ -20,6 +20,7 @@ func guestError(ptr uintptr, len uint32)
 //go:wasm-module wapc
 //go:export __host_call
 func hostCall(
+	bindingPtr uintptr, bindingLen uint32,
 	namespacePtr uintptr, namespaceLen uint32,
 	operationPtr uintptr, operationLen uint32,
 	payloadPtr uintptr, payloadLen uint32) bool
@@ -94,8 +95,9 @@ func guestCall(operationSize uint32, payloadSize uint32) bool {
 // HostCall invokes an operation on the host.  The host uses `namespace` and `operation`
 // to route to the `payload` to the appropriate operation.  The host will return
 // a response payload if successful.
-func HostCall(namespace, operation string, payload []byte) ([]byte, error) {
+func HostCall(binding, namespace, operation string, payload []byte) ([]byte, error) {
 	result := hostCall(
+		stringToPointer(binding), uint32(len(binding)),
 		stringToPointer(namespace), uint32(len(namespace)),
 		stringToPointer(operation), uint32(len(operation)),
 		bytesToPointer(payload), uint32(len(payload)),

@@ -21,7 +21,7 @@ func main() {
 }
 
 func hello(payload []byte) ([]byte, error) {
-	wapc.HostCall("sample", "hello", []byte("Simon"))
+	wapc.HostCall("myBinding", "sample", "hello", []byte("Simon"))
 	return []byte("Hello"), nil
 }
 ```
