@@ -5,7 +5,7 @@ import (
 )
 
 func main() {
-	wapc.Register(wapc.Functions{
+	wapc.RegisterFunctions(wapc.Functions{
 		"hello": hello,
 	})
 }

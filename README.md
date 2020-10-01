@@ -1,7 +1,5 @@
 # waPC Guest Library for TinyGo
 
-**Note:** Consider this SDK experimental.  We have yet to put it through more advanced use cases than "hello world".
-
 This is the TinyGo implementation of the **waPC** standard for WebAssembly guest modules. It allows any waPC-compliant WebAssembly host to invoke to procedures inside a TinyGo compiled guest and similarly for the guest to invoke procedures exposed by the host.
 
 ## Example
@@ -15,7 +13,7 @@ import (
 )
 
 func main() {
-	wapc.Register(wapc.Functions{
+	wapc.RegisterFunctions(wapc.Functions{
 		"hello": hello,
 	})
 }
@@ -30,9 +28,8 @@ func hello(payload []byte) ([]byte, error) {
 tinygo build -o example/hello.wasm -target wasm -no-debug example/hello.go
 ```
 
-## Known limitations
+## Considerations
 
-* Only go up to 1.13 is supported by TinyGo
-* The `fmt` package requires `syscall/js.*` which are not imported by the waPC host
-* TinyGo has limited `reflect` package support, thus libraries like protobuf will likely not work
-* [No garbage collector](https://tinygo.org/compiler-internals/heap-allocation/) - memory allocation occurs in this library
+* It is recommended to use the latest versions Go and TinyGo
+* Avoid using the `fmt` package as it requires `syscall/js.*` which are not implemented by the waPC host libraries
+* TinyGo has limited `reflect` package support, thus generated Protobuf code will likely not work without some tweaking (But we have gotten it to work!)
