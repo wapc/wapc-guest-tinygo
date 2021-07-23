@@ -1,4 +1,4 @@
-// +build wasm
+// +build wasm tinygo.wasm wasi
 
 package wapc
 
