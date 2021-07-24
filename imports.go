@@ -1,4 +1,4 @@
-// +build !purego,!appengine,!wasm
+// +build !purego,!appengine,!wasm,!tinygo.wasm,!wasi
 
 package wapc
 
