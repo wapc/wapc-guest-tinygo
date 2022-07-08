@@ -1,0 +1,49 @@
+name: go tests
+
+on:
+  push:
+    tags:
+      - v*
+    branches:
+      - master
+      - main
+  pull_request:
+
+jobs:
+  # Note: TinyGo is not idempotent when generating wasm, so we don't check in
+  # %.wasm as a part of this job.
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        go-version:  # Note: Go only supports 2 versions: https://go.dev/doc/devel/release#policy
+          - "1.16"  # Minimum Go version of latest TinyGo
+          - "1.18"  # Latest
+        tinygo-version:  # See https://github.com/tinygo-org/tinygo/releases
+          - "0.18.0"  # First version to use wasi_snapshot_preview1
+          - "0.25.0"  # Latest
+
+    steps:
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.18
+
+      - name: Install TinyGo
+        run: |  # Installing via curl so commands are similar on OS/x
+          tinygo_version=${{ matrix.tinygo-version }}
+          curl -sSL https://github.com/tinygo-org/tinygo/releases/download/v${tinygo_version}/tinygo${tinygo_version}.linux-amd64.tar.gz | sudo tar -C /usr/local -xzf -
+          echo "TINYGOROOT=/usr/local/tinygo" >> $GITHUB_ENV
+          echo "/usr/local/tinygo/bin" >> $GITHUB_PATH
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Build example
+        run: tinygo build -o example/hello.wasm -scheduler=none --no-debug -target=wasi example/hello.go
+
+      - name: Build test wasm
+        run: cd internal; make build-wasm
+
+      - name: Test
+        run: go test -v ./...

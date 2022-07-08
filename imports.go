@@ -1,3 +1,4 @@
+//go:build !purego && !appengine && !wasm && !tinygo.wasm && !wasi
 // +build !purego,!appengine,!wasm,!tinygo.wasm,!wasi
 
 package wapc
@@ -23,3 +24,5 @@ func hostResponse(ptr uintptr) {}
 func hostErrorLen() uint32 { return 0 }
 
 func hostError(ptr uintptr) {}
+
+func consoleLog(ptr uintptr, size uint32) {}
