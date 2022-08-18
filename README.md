@@ -25,7 +25,7 @@ func hello(payload []byte) ([]byte, error) {
 ```
 
 ```sh
-tinygo build -o example/hello.wasm -target wasm -no-debug example/hello.go
+tinygo build -o example/hello.wasm -scheduler=none --no-debug -target=wasi example/hello.go
 ```
 
 ## Considerations

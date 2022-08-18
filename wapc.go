@@ -22,7 +22,7 @@ var (
 	allFunctions = Functions{}
 )
 
-// RegisterFunctions adds functions by name to the registery.
+// RegisterFunctions adds functions by name to the registry.
 // This should be invoked in `main()`.
 func RegisterFunctions(functions Functions) {
 	for name, fn := range functions {
@@ -30,7 +30,7 @@ func RegisterFunctions(functions Functions) {
 	}
 }
 
-// RegisterFunction adds a single function by name to the registery.
+// RegisterFunction adds a single function by name to the registry.
 // This should be invoked in `main()`.
 func RegisterFunction(name string, fn Function) {
 	allFunctions[name] = fn
@@ -60,6 +60,11 @@ func guestCall(operationSize uint32, payloadSize uint32) bool {
 	guestError(stringToPointer(message), uint32(len(message)))
 
 	return false
+}
+
+// ConsoleLog writes the message the underlying waPC console logger.
+func ConsoleLog(msg string) {
+	consoleLog(stringToPointer(msg), uint32(len(msg)))
 }
 
 // HostCall invokes an operation on the host.  The host uses `namespace` and `operation`

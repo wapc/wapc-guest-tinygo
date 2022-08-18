@@ -1,3 +1,3 @@
 module github.com/wapc/wapc-guest-tinygo
 
-go 1.15
+go 1.16
