@@ -7,7 +7,7 @@ import (
 
 type (
 	// Function is the function to register in your waPC module.
-	Function func(value []byte) ([]byte, error)
+	Function func(payload []byte) ([]byte, error)
 
 	// Functions is a map of function name to `Function`.
 	Functions map[string]Function
