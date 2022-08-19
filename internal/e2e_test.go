@@ -5,6 +5,9 @@ import (
 	_ "embed"
 	"github.com/stretchr/testify/require"
 	"github.com/tetratelabs/wazero/api"
+	"log"
+	"os"
+	"path"
 	"testing"
 
 	"github.com/tetratelabs/wazero"
@@ -14,10 +17,25 @@ import (
 // testCtx is an arbitrary, non-default context. Non-nil also prevents linter errors.
 var testCtx = context.WithValue(context.Background(), struct{}{}, "arbitrary")
 
-// consoleLogWasm was compiled from testdata/__console_log/main.go
-//
-//go:embed testdata/__console_log/main.wasm
-var consoleLogWasm []byte
+var guestWasm map[string][]byte
+
+const (
+	guestWasmConsoleLog = "__console_log"
+)
+
+// TestMain ensures we can read the test wasm prior to running e2e tests.
+func TestMain(m *testing.M) {
+	wasms := []string{guestWasmConsoleLog}
+	guestWasm = make(map[string][]byte, len(wasms))
+	for _, name := range wasms {
+		if wasm, err := os.ReadFile(path.Join("e2e", name, "main.wasm")); err != nil {
+			log.Panicln(err)
+		} else {
+			guestWasm[name] = wasm
+		}
+	}
+	os.Exit(m.Run())
+}
 
 func Test_EndToEnd(t *testing.T) {
 	type testCase struct {
@@ -29,7 +47,7 @@ func Test_EndToEnd(t *testing.T) {
 	tests := []testCase{
 		{
 			name:  "ConsoleLog",
-			guest: consoleLogWasm,
+			guest: guestWasm[guestWasmConsoleLog],
 			test: func(t *testing.T, guest api.Module, host *wapcHost) {
 				// main invokes ConsoleLog
 				require.Equal(t, []string{"msg", "msg1", "msg"}, host.consoleLogMessages)
