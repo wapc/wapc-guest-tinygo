@@ -15,11 +15,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
+      # To simplify setup, we use one Go version, even if it is out of the official version range.
+      # This version must be <= max version of earliest TinyGo supported and >= min version of latest.
       matrix:
         go-version:  # Note: Go only supports 2 versions: https://go.dev/doc/devel/release#policy
-          - "1.16"  # Minimum Go version of latest TinyGo
-          - "1.18"  # Latest
-        tinygo-version:  # See https://github.com/tinygo-org/tinygo/releases
+          - "1.16"  # Minimum Go version of latest TinyGo albeit EOL.
+        tinygo-version:  # Note: TinyGo only supports latest: https://github.com/tinygo-org/tinygo/releases
           - "0.18.0"  # First version to use wasi_snapshot_preview1
           - "0.25.0"  # Latest
 
@@ -27,7 +28,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v3
         with:
-          go-version: 1.18
+          go-version: ${{ matrix.go-version }}
 
       - name: Install TinyGo
         run: |  # Installing via curl so commands are similar on OS/x
@@ -43,7 +44,7 @@ jobs:
         run: tinygo build -o example/hello.wasm -scheduler=none --no-debug -target=wasi example/hello.go
 
       - name: Build test wasm
-        run: cd internal; make build-wasm
+        run: cd internal/e2e; make
 
       - name: Test
         run: go test -v ./...
