@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/stretchr/testify v1.8.0
-	github.com/tetratelabs/wazero v0.0.0-20220816233340-7d071a45d786
+	github.com/tetratelabs/wazero v1.0.0-beta.1
 )
 
 require (
