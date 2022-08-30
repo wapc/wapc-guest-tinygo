@@ -56,7 +56,7 @@ func Test_EndToEnd(t *testing.T) {
 	}
 
 	// Create a new WebAssembly Runtime.
-	r := wazero.NewRuntimeWithConfig(wazero.NewRuntimeConfig().
+	r := wazero.NewRuntimeWithConfig(testCtx, wazero.NewRuntimeConfig().
 		// WebAssembly 2.0 allows use of any version of TinyGo, including 0.24+.
 		WithWasmCore2())
 	defer r.Close(testCtx) // This closes everything this Runtime created.
