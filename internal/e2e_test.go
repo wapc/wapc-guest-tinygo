@@ -3,12 +3,13 @@ package internal_test
 import (
 	"context"
 	_ "embed"
-	"github.com/stretchr/testify/require"
-	"github.com/tetratelabs/wazero/api"
 	"log"
 	"os"
 	"path"
 	"testing"
+
+	"github.com/stretchr/testify/require"
+	"github.com/tetratelabs/wazero/api"
 
 	"github.com/tetratelabs/wazero"
 	"github.com/tetratelabs/wazero/imports/wasi_snapshot_preview1"
@@ -56,9 +57,7 @@ func Test_EndToEnd(t *testing.T) {
 	}
 
 	// Create a new WebAssembly Runtime.
-	r := wazero.NewRuntimeWithConfig(testCtx, wazero.NewRuntimeConfig().
-		// WebAssembly 2.0 allows use of any version of TinyGo, including 0.24+.
-		WithWasmCore2())
+	r := wazero.NewRuntime(testCtx)
 	defer r.Close(testCtx) // This closes everything this Runtime created.
 
 	// Instantiate WASI, which implements system I/O such as console output and
