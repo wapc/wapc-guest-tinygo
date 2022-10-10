@@ -2,9 +2,10 @@ package internal_test
 
 import (
 	"context"
+	"testing"
+
 	"github.com/tetratelabs/wazero"
 	"github.com/tetratelabs/wazero/api"
-	"testing"
 )
 
 // instantiateWapcHost instantiates a test waPC host and returns it and a cleanup function.
