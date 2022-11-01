@@ -12,25 +12,41 @@ import (
 func instantiateWapcHost(t *testing.T, r wazero.Runtime) (*wapcHost, api.Closer) {
 	h := &wapcHost{t: t}
 	// Export host functions (in the order defined in https://wapc.io/docs/spec/#required-host-exports)
-	if host, err := r.NewModuleBuilder("wapc").
-		ExportFunction("__host_call", h.hostCall,
-			"__host_call", "bind_ptr", "bind_len", "ns_ptr", "ns_len", "cmd_ptr", "cmd_len", "payload_ptr", "payload_len").
-		ExportFunction("__console_log", h.consoleLog,
-			"__console_log", "ptr", "len").
-		ExportFunction("__guest_request", h.guestRequest,
-			"__guest_request", "op_ptr", "ptr").
-		ExportFunction("__host_response", h.hostResponse,
-			"__host_response", "ptr").
-		ExportFunction("__host_response_len", h.hostResponseLen,
-			"__host_response_len").
-		ExportFunction("__guest_response", h.guestResponse,
-			"__guest_response", "ptr", "len").
-		ExportFunction("__guest_error", h.guestError,
-			"__guest_error", "ptr", "len").
-		ExportFunction("__host_error", h.hostError,
-			"__host_error", "ptr").
-		ExportFunction("__host_error_len", h.hostErrorLen,
-			"__host_error_len").
+	if host, err := r.NewHostModuleBuilder("wapc").
+		NewFunctionBuilder().
+		WithFunc(h.hostCall).
+		WithParameterNames("bind_ptr", "bind_len", "ns_ptr", "ns_len", "cmd_ptr", "cmd_len", "payload_ptr", "payload_len").
+		Export("__host_call").
+		NewFunctionBuilder().
+		WithFunc(h.consoleLog).
+		WithParameterNames("ptr", "len").
+		Export("__console_log").
+		NewFunctionBuilder().
+		WithFunc(h.guestRequest).
+		WithParameterNames("op_ptr", "ptr").
+		Export("__guest_request").
+		NewFunctionBuilder().
+		WithFunc(h.hostResponse).
+		WithParameterNames("ptr").
+		Export("__host_response").
+		NewFunctionBuilder().
+		WithFunc(h.hostResponseLen).
+		Export("__host_response_len").
+		NewFunctionBuilder().
+		WithFunc(h.guestResponse).
+		WithParameterNames("ptr", "len").
+		Export("__guest_response").
+		NewFunctionBuilder().
+		WithFunc(h.guestError).
+		WithParameterNames("ptr", "len").
+		Export("__guest_error").
+		NewFunctionBuilder().
+		WithFunc(h.hostError).
+		WithParameterNames("ptr").
+		Export("__host_error").
+		NewFunctionBuilder().
+		WithFunc(h.hostErrorLen).
+		Export("__host_error_len").
 		Instantiate(testCtx, r); err != nil {
 		t.Errorf("Error instantiating waPC host - %v", err)
 		return h, nil

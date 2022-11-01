@@ -13,7 +13,8 @@ func hostCall(
 	bindingPtr uintptr, bindingLen uint32,
 	namespacePtr uintptr, namespaceLen uint32,
 	operationPtr uintptr, operationLen uint32,
-	payloadPtr uintptr, payloadLen uint32) bool {
+	payloadPtr uintptr, payloadLen uint32,
+) bool {
 	return true
 }
 
