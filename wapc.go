@@ -18,9 +18,7 @@ type (
 	}
 )
 
-var (
-	allFunctions = Functions{}
-)
+var allFunctions = Functions{}
 
 // RegisterFunctions adds functions by name to the registry.
 // This should be invoked in `main()`.
