@@ -72,7 +72,7 @@ func Test_EndToEnd(t *testing.T) {
 			h, host := instantiateWapcHost(t, r)
 			defer host.Close(testCtx)
 
-			g, err := r.InstantiateModuleFromBinary(testCtx, tc.guest)
+			g, err := r.Instantiate(testCtx, tc.guest)
 			if err != nil {
 				t.Errorf("Error instantiating waPC guest - %v", err)
 			}
