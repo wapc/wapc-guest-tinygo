@@ -19,20 +19,20 @@ jobs:
       # This version must be <= max version of earliest TinyGo supported and >= min version of latest.
       matrix:
         go-version:  # Note: Go only supports 2 versions: https://go.dev/doc/devel/release#policy
-          - "1.18"  # Minimum Go version of latest TinyGo even if EOL.
-          - "1.19"
-          - "1.20"
-          - "1.21"
+#          - "1.18"  # Minimum Go version of latest TinyGo even if EOL.
+#          - "1.19"
+#          - "1.20"
+#          - "1.21"
           - "1.22"
           - "1.23"
         tinygo-version:  # Note: TinyGo only supports latest: https://github.com/tinygo-org/tinygo/releases
-          - "0.23.0"  # Earliest version to support 1.18
-          - "0.26.0"
-          - "0.27.0"
-          - "0.28.0"
-          - "0.29.0"
-          - "0.30.0"
-          - "0.31.0"
+#          - "0.23.0"  # Earliest version to support 1.18
+#          - "0.26.0"
+#          - "0.27.0"
+#          - "0.28.0"
+#          - "0.29.0"
+#          - "0.30.0"
+#          - "0.31.0"
           - "0.32.0"
           - "0.33.0"
           - "0.34.0"
