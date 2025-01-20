@@ -19,10 +19,12 @@ jobs:
       # This version must be <= max version of earliest TinyGo supported and >= min version of latest.
       matrix:
         go-version:  # Note: Go only supports 2 versions: https://go.dev/doc/devel/release#policy
-          - "1.18"  # Minimum Go version of latest TinyGo even if EOL.
+          - "1.22"
+          - "1.23"
         tinygo-version:  # Note: TinyGo only supports latest: https://github.com/tinygo-org/tinygo/releases
-          - "0.23.0"  # Earliest version to support 1.18
-          - "0.26.0"  # Latest
+          - "0.33.0"
+          - "0.34.0"
+#          - "0.35.0" // Currently Broken
 
     steps:
       - name: Set up Go
@@ -41,10 +43,10 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Build example
-        run: tinygo build -o example/hello.wasm -scheduler=none --no-debug -target=wasi example/hello.go
+        run: make build
 
       - name: Build test wasm
         run: cd internal/e2e; make
 
       - name: Test
-        run: go test -v ./...
+        run: make tests
