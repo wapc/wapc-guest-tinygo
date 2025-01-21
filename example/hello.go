@@ -2,7 +2,8 @@ package main
 
 import "github.com/wapc/wapc-guest-tinygo"
 
-func main() {
+//go:wasmexport wapc_init
+func Initialize() {
 	wapc.RegisterFunctions(wapc.Functions{
 		"hello": hello,
 	})

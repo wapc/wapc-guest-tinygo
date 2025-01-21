@@ -22,9 +22,7 @@ jobs:
           - "1.22"
           - "1.23"
         tinygo-version:  # Note: TinyGo only supports latest: https://github.com/tinygo-org/tinygo/releases
-          - "0.33.0"
-          - "0.34.0"
-#          - "0.35.0" // Currently Broken
+          - "0.35.0"  # Latest
 
     steps:
       - name: Set up Go

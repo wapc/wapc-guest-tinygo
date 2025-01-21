@@ -1,10 +1,10 @@
 module github.com/wapc/wapc-guest-tinygo/internal
 
-go 1.18
+go 1.23
 
 require (
-	github.com/stretchr/testify v1.8.0
-	github.com/tetratelabs/wazero v1.0.0-pre.4
+	github.com/stretchr/testify v1.10.0
+	github.com/tetratelabs/wazero v1.8.2
 )
 
 require (
