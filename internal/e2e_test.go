@@ -15,8 +15,10 @@ import (
 	"github.com/tetratelabs/wazero/imports/wasi_snapshot_preview1"
 )
 
+type testKey struct{}
+
 // testCtx is an arbitrary, non-default context. Non-nil also prevents linter errors.
-var testCtx = context.WithValue(context.Background(), struct{}{}, "arbitrary")
+var testCtx = context.WithValue(context.Background(), testKey{}, "arbitrary")
 
 var guestWasm map[string][]byte
 
@@ -72,7 +74,7 @@ func Test_EndToEnd(t *testing.T) {
 			h, host := instantiateWapcHost(t, r)
 			defer host.Close(testCtx)
 
-			g, err := r.InstantiateModuleFromBinary(testCtx, tc.guest)
+			g, err := r.Instantiate(testCtx, tc.guest)
 			if err != nil {
 				t.Errorf("Error instantiating waPC guest - %v", err)
 			}

@@ -47,7 +47,7 @@ func instantiateWapcHost(t *testing.T, r wazero.Runtime) (*wapcHost, api.Closer)
 		NewFunctionBuilder().
 		WithFunc(h.hostErrorLen).
 		Export("__host_error_len").
-		Instantiate(testCtx, r); err != nil {
+		Instantiate(testCtx); err != nil {
 		t.Errorf("Error instantiating waPC host - %v", err)
 		return h, nil
 	} else {
@@ -122,7 +122,7 @@ func (w *wapcHost) requireReadString(ctx context.Context, mem api.Memory, fieldN
 
 // requireRead is like api.Memory except that it panics if the offset and byteCount are out of range.
 func (w *wapcHost) requireRead(ctx context.Context, mem api.Memory, fieldName string, offset, byteCount uint32) []byte {
-	buf, ok := mem.Read(ctx, offset, byteCount)
+	buf, ok := mem.Read(offset, byteCount)
 	if !ok {
 		w.t.Fatalf("out of memory reading %s", fieldName)
 	}
