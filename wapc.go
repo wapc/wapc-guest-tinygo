@@ -1,7 +1,6 @@
 package wapc
 
 import (
-	"reflect"
 	"unsafe"
 )
 
@@ -35,7 +34,7 @@ func RegisterFunction(name string, fn Function) {
 }
 
 //go:export __guest_call
-func guestCall(operationSize uint32, payloadSize uint32) bool {
+func GuestCall(operationSize uint32, payloadSize uint32) bool {
 	operation := make([]byte, operationSize) // alloc
 	payload := make([]byte, payloadSize)     // alloc
 	guestRequest(bytesToPointer(operation), bytesToPointer(payload))
@@ -92,12 +91,12 @@ func HostCall(binding, namespace, operation string, payload []byte) ([]byte, err
 
 //go:inline
 func bytesToPointer(s []byte) uintptr {
-	return (*(*reflect.SliceHeader)(unsafe.Pointer(&s))).Data
+	return uintptr(unsafe.Pointer(unsafe.SliceData(s)))
 }
 
 //go:inline
 func stringToPointer(s string) uintptr {
-	return (*(*reflect.StringHeader)(unsafe.Pointer(&s))).Data
+	return uintptr(unsafe.Pointer(unsafe.StringData(s)))
 }
 
 func (e *HostError) Error() string {
